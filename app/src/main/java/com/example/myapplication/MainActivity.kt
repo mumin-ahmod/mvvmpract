@@ -33,10 +33,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         setupObservers()
         viewModel.fetchWeather() // Default Berlin coordinates
 
+        //viewmodel calling starts from here
         binding.btnRefresh.setOnClickListener {
             viewModel.fetchWeather()
         }
