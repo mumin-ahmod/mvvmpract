@@ -23,6 +23,8 @@ object RetrofitInstance {
             .build()
     }
 
+    // the actual retrofit instance get created here  val weatherApi: WeatherApiService = retrofit.create()
+
     val weatherApi: WeatherApiService by lazy {
         retrofit.create(WeatherApiService::class.java)
     }

@@ -29,8 +29,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("TAG", "MAIN ONCREATE CALLED")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         setupObservers()
         viewModel.fetchWeather() // Default Berlin coordinates
@@ -49,6 +51,9 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.weatherState.collect { state ->
                     when (state) {
+
+                        //we made 3 fun to show different progress
+                        //based on state
                         is WeatherUiState.Loading -> showLoading()
                         is WeatherUiState.Success -> showWeather(state.weather)
                         is WeatherUiState.Error -> showError(state.message)

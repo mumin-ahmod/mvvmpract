@@ -4,6 +4,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 // WeatherApiService.kt
+
+
+//actual link gets made in here
 interface WeatherApiService {
     @GET("v1/forecast")
     suspend fun getWeather(
