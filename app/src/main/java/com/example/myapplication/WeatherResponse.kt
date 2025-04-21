@@ -15,12 +15,3 @@ data class CurrentWeather(
     val time: String
 )
 
-data class HourlyWeatherResponse(
-   val hourly: HourlyData
-)
-
-data class HourlyData (
-    val time: List<String>,
-    val temperature_2m: List<Double>,
-    val weathercode: List<Int>
-)
