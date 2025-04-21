@@ -20,5 +20,5 @@ interface WeatherApiService {
         @Query("latitude") lat: Double,
         @Query("longitude") long: Double,
         @Query("hourly") params: String = "temperature_2m,weathercode"
-    ): WeatherResponse
+    ): HourlyWeatherResponse
 }
