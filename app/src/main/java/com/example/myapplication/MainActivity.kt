@@ -27,6 +27,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: WeatherViewModel by viewModels()
 
+
+    private val hourlyViewModel: HourlyViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("TAG", "MAIN ONCREATE CALLED")
@@ -34,11 +37,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupObservers()
-        viewModel.fetchWeather() // Default Berlin coordinates
+        viewModel.fetchWeather() //
 
-        //viewmodel calling starts from here
+        //binding theke niye niye amra call korte parbo
         binding.btnRefresh.setOnClickListener {
             viewModel.fetchWeather()
+        }
+
+        //1. button calls ViewModel fetchHourly
+        binding.btnHourlyForecast.setOnClickListener{
+
+            hourlyViewModel.fetchHourlyForecast()
+
+            //go to new hourly forecast page here
+            // Show the fragment
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, WeatherFragment()) // Replace with your fragment class
+                .addToBackStack(null) // So user can press back to return
+                .commit()
+
+            // Optionally hide main layout if you want only the fragment
+            binding.rootLayout.visibility = View.GONE
         }
     }
 

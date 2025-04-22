@@ -5,7 +5,7 @@
     android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
+<!--//item_weather.xml-->
     <TextView android:id="@+id/timeText"
         android:textStyle="bold"
         android:layout_width="wrap_content"

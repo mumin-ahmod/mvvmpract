@@ -88,4 +88,7 @@ dependencies {
     // For control over item selection of both touch and mouse driven selection
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
 
+    // Kotlin
+    implementation("androidx.fragment:fragment-ktx:1.8.6")
+
 }

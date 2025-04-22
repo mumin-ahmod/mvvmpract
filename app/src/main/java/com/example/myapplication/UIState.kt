@@ -9,7 +9,7 @@ sealed class WeatherUiState {
 }
 
 sealed class HourlyUiState {
-    object Loading : WeatherUiState()
-    data class Success(val weather: HourlyWeatherResponse) : WeatherUiState()
-    data class Error(val message: String) : WeatherUiState()
+    object Loading : HourlyUiState()
+    data class Success(val weather: HourlyWeatherResponse) : HourlyUiState()
+    data class Error(val message: String) : HourlyUiState()
 }

@@ -11,6 +11,7 @@ class WeatherRepository {
 
     private val api = RetrofitInstance.weatherApi
 
+    //returns a Flow<WeatherResponse> means it emits weather data - 1 or more times
     suspend fun getWeather(lat: Double, long: Double): Flow<WeatherResponse> {
         return flow {
 

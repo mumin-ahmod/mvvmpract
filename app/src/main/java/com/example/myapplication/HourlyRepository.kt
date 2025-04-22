@@ -14,6 +14,10 @@ class HourlyRepository {
     private val api = RetrofitInstance.weatherApi
 
 
+    //returns a Flow<WeatherResponse> means it emits weather data - 1 or more times
+
+
+    //3. Calls Retrofit and Updates flow using emit()
     suspend fun getHourlyForecast(lat: Double, long: Double): Flow<HourlyWeatherResponse> {
         return flow {
 
@@ -23,6 +27,8 @@ class HourlyRepository {
             //flow Listens to this
 
             Log.d("HOURLY RESPONSE:", "$response")
+
+            //emit(response) sends this data downstream to whoever is collecting the flow
             emit(response)
         }.flowOn(Dispatchers.IO)
     }
