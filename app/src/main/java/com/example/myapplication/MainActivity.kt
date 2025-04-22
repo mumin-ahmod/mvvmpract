@@ -32,32 +32,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("TAG", "MAIN ONCREATE CALLED")
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
-        setupObservers()
-        viewModel.fetchWeather() //
-
-        //binding theke niye niye amra call korte parbo
-        binding.btnRefresh.setOnClickListener {
-            viewModel.fetchWeather()
-        }
-
-        //1. button calls ViewModel fetchHourly
-        binding.btnHourlyForecast.setOnClickListener{
-
-            hourlyViewModel.fetchHourlyForecast()
-
-            //go to new hourly forecast page here
-            // Show the fragment
+        // Directly show the WeatherFragment in the fragment container
+        if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, WeatherFragment()) // Replace with your fragment class
-                .addToBackStack(null) // So user can press back to return
+                .replace(R.id.fragmentContainer, WeatherFragment())
                 .commit()
-
-            // Optionally hide main layout if you want only the fragment
-            binding.rootLayout.visibility = View.GONE
         }
     }
 
@@ -97,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         with(weather.current_weather) {
             binding.temperatureText.text = "${temperature}°C"
             binding.windText.text = "Wind: ${windspeed} km/h"
-            binding.timeText.text = "Updated: ${time.substring(11)}" // Just show time
+            binding.WtimeText.text = "Updated: ${time.substring(11)}" // Just show time
         }
     }
 

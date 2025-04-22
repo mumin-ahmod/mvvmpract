@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ class WeatherAdapter(private val items: List<HourlyWeatherItem>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
+        Log.d("Adapter Called", "ADAPTER:")
+
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_weather, parent, false)
         return WeatherViewHolder(view)
@@ -23,6 +26,8 @@ class WeatherAdapter(private val items: List<HourlyWeatherItem>) :
 
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
         val item = items[position]
+
+        Log.d("Adapter Called", "ADAPTER: $item.time")
         holder.time.text = item.time
         holder.temp.text = "${item.temperature}°C"
         holder.code.text = "Code: ${item.weatherCode}"

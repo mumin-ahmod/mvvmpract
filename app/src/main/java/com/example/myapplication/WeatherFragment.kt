@@ -16,12 +16,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentWeatherBinding
 import kotlinx.coroutines.launch
+
 class WeatherFragment : Fragment() {
 
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!
+    private val hourlyViewModel: HourlyViewModel by activityViewModels()
 
-    private val hourlyViewModel: HourlyViewModel by activityViewModels() // shared with MainActivity
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,16 +34,24 @@ class WeatherFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("Fragment Called", "Fragment")
+        binding.weatherRecycler.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.weatherRecycler.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+
+
         binding.btnRefreshHourly.setOnClickListener {
             hourlyViewModel.fetchHourlyForecast()
         }
 
-        binding.weatherRecycler.layoutManager = LinearLayoutManager(requireContext())
+//
 
         collectWeatherState()
     }
 
     private fun collectWeatherState() {
+        binding.weatherRecycler.layoutManager = LinearLayoutManager(requireContext())
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 hourlyViewModel.hourlyState.collect { state ->
@@ -54,6 +64,7 @@ class WeatherFragment : Fragment() {
                         is HourlyUiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             binding.errorText.visibility = View.GONE
+                            binding.weatherRecycler.visibility = View.VISIBLE
                             showWeather(state.weather)
                         }
                         is HourlyUiState.Error -> {
@@ -70,13 +81,17 @@ class WeatherFragment : Fragment() {
     }
 
     private fun showWeather(data: HourlyWeatherResponse) {
-        val items = data.hourly.time.indices.map { i ->
+
+        binding.weatherRecycler.layoutManager = LinearLayoutManager(requireContext())
+
+        val items = data.hourly.time.indices.map { index ->
             HourlyWeatherItem(
-                time = data.hourly.time[i],
-                temperature = data.hourly.temperature_2m[i],
-                weatherCode = data.hourly.weathercode[i]
+                time = data.hourly.time[index],
+                temperature = data.hourly.temperature_2m[index],
+                weatherCode = data.hourly.weathercode[index]
             )
         }
+        Log.d("ShowWeather called", "$items")
         val adapter = WeatherAdapter(items)
         binding.weatherRecycler.adapter = adapter
         binding.weatherRecycler.visibility = View.VISIBLE
