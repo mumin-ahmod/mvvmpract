@@ -2,38 +2,44 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/hourlyFragment"
-    >
-<!--fragment_weather.xml-->
+    android:layout_height="match_parent">
+
     <Button
         android:id="@+id/btnRefreshHourly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Refresh Hourly Forecast" />
+        android:text="Refresh Hourly Forecast"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="16dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_marginBottom="16dp" />
 
     <TextView
         android:id="@+id/errorText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Error loading data"
         android:textColor="@android:color/holo_red_dark"
-        android:visibility="gone" />
-
-
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/weatherRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp" />
 
 </LinearLayout>

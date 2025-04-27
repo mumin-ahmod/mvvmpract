@@ -24,6 +24,7 @@ class WeatherAdapter:
         }
     }
 
+    //recycler view
     inner class WeatherViewHolder(private val binding: ItemWeatherBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HourlyWeatherItem) {
             binding.timeText.text = item.time
