@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.ui.Fragment
 
 import HourlyUiState
 import android.os.Bundle
@@ -14,8 +14,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.ui.Adapter.WeatherAdapter
+import com.example.myapplication.ui.WeatherPagingSource
+import com.example.myapplication.data.model.HourlyWeatherResponse
 import com.example.myapplication.databinding.FragmentHourlyBinding
-import com.example.myapplication.databinding.FragmentWeatherBinding
+import com.example.myapplication.ui.ViewModel.HourlyViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

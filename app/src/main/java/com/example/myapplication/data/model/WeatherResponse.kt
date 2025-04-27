@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.data.model
 
 // WeatherResponse.kt
 data class WeatherResponse(

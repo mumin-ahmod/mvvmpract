@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/weatherFragment2"
-        android:name="com.example.myapplication.WeatherFragment"
+        android:name="com.example.myapplication.ui.Fragment.WeatherFragment"
         android:label="WeatherFragment" >
         <action
             android:id="@+id/action_weatherFragment2_to_hourlyFragment2"
@@ -14,6 +14,6 @@
     </fragment>
     <fragment
         android:id="@+id/hourlyFragment2"
-        android:name="com.example.myapplication.HourlyFragment"
+        android:name="com.example.myapplication.ui.Fragment.HourlyFragment"
         android:label="HourlyFragment" />
 </navigation>

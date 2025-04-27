@@ -1,5 +1,5 @@
-import com.example.myapplication.HourlyWeatherResponse
-import com.example.myapplication.WeatherResponse
+import com.example.myapplication.data.model.HourlyWeatherResponse
+import com.example.myapplication.data.model.WeatherResponse
 
 // UiState.kt
 sealed class WeatherUiState {

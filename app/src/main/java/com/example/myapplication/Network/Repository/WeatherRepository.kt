@@ -1,6 +1,8 @@
-package com.example.myapplication
+package com.example.myapplication.Network.Repository
 
 import android.util.Log
+import com.example.myapplication.Network.API.RetrofitInstance
+import com.example.myapplication.data.model.WeatherResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

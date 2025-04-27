@@ -1,5 +1,7 @@
-package com.example.myapplication
+package com.example.myapplication.Network
 
+import com.example.myapplication.data.model.HourlyWeatherResponse
+import com.example.myapplication.data.model.WeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

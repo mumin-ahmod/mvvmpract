@@ -1,7 +1,9 @@
-package com.example.myapplication
+package com.example.myapplication.ui
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.myapplication.data.model.HourlyWeatherItem
+import com.example.myapplication.data.model.HourlyWeatherResponse
 
 
 class WeatherPagingSource(private val data: HourlyWeatherResponse) : PagingSource<Int, HourlyWeatherItem>() {

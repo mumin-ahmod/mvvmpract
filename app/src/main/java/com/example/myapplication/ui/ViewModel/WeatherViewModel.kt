@@ -1,10 +1,11 @@
-package com.example.myapplication
+package com.example.myapplication.ui.ViewModel
 
-import HourlyUiState
 import WeatherUiState
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.Network.Repository.HourlyRepository
+import com.example.myapplication.Network.Repository.WeatherRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
