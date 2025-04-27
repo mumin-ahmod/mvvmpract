@@ -21,6 +21,11 @@ class HourlyViewModel : ViewModel() {
     val hourlyState: StateFlow<HourlyUiState> = _hourlyState
 
 
+
+    init {
+        fetchHourlyForecast()
+    }
+
     fun fetchHourlyForecast(lat: Double = 26.68, long: Double = 90.35) {
         viewModelScope.launch {
 

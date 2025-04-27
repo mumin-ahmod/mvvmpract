@@ -5,33 +5,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.databinding.ItemWeatherBinding
 
-class WeatherAdapter(private val items: List<HourlyWeatherItem>) :
-    RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>() {
-
-    inner class WeatherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val time = itemView.findViewById<TextView>(R.id.timeText)
-        val temp = itemView.findViewById<TextView>(R.id.tempText)
-        val code = itemView.findViewById<TextView>(R.id.codeText)
-    }
+//weather a
+class WeatherAdapter:
+    PagingDataAdapter<HourlyWeatherItem, WeatherAdapter.WeatherViewHolder>(ITEM_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
-        Log.d("Adapter Called", "ADAPTER:")
-
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_weather, parent, false)
-        return WeatherViewHolder(view)
+        val binding = ItemWeatherBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return WeatherViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
-        val item = items[position]
-
-        Log.d("Adapter Called", "ADAPTER: $item.time")
-        holder.time.text = item.time
-        holder.temp.text = "${item.temperature}°C"
-        holder.code.text = "Code: ${item.weatherCode}"
+        val item = getItem(position)
+        item?.let {
+            holder.bind(it)
+        }
     }
 
-    override fun getItemCount(): Int = items.size
+    inner class WeatherViewHolder(private val binding: ItemWeatherBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: HourlyWeatherItem) {
+            binding.timeText.text = item.time
+            binding.tempText.text = "${item.temperature}°C"
+            binding.codeText.text = "Code: ${item.weatherCode}"
+        }
+    }
+
+    companion object {
+        val ITEM_COMPARATOR = object : DiffUtil.ItemCallback<HourlyWeatherItem>() {
+            override fun areItemsTheSame(oldItem: HourlyWeatherItem, newItem: HourlyWeatherItem): Boolean {
+                return oldItem.time == newItem.time
+            }
+
+            override fun areContentsTheSame(oldItem: HourlyWeatherItem, newItem: HourlyWeatherItem): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 }

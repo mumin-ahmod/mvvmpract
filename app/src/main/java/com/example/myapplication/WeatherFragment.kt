@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import HourlyUiState
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,21 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentWeatherBinding
 import kotlinx.coroutines.launch
 
 class WeatherFragment : Fragment() {
-
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!
-    private val hourlyViewModel: HourlyViewModel by activityViewModels()
+    private val viewModel: WeatherViewModel by viewModels()
 
+    //declaring nav controller variable
+    lateinit var navController: NavController
 
 
     override fun onCreateView(
@@ -30,75 +31,75 @@ class WeatherFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWeatherBinding.inflate(inflater, container, false)
+
+        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("Fragment Called", "Fragment")
-        binding.weatherRecycler.layoutManager = LinearLayoutManager(requireContext())
-
-        binding.weatherRecycler.visibility = View.VISIBLE
-        binding.progressBar.visibility = View.GONE
+        super.onViewCreated(view, savedInstanceState)
 
 
-        binding.btnRefreshHourly.setOnClickListener {
-            hourlyViewModel.fetchHourlyForecast()
+        setupObservers()
+
+        viewModel.fetchWeather() //calling fetch weather
+
+        binding.btnRefresh.setOnClickListener{
+            viewModel.fetchWeather()
         }
 
-//
 
-        collectWeatherState()
+
+        binding.btnHourly.setOnClickListener {
+            findNavController().navigate(R.id.action_weatherFragment2_to_hourlyFragment2)
+        }
+
     }
-
-    private fun collectWeatherState() {
-        binding.weatherRecycler.layoutManager = LinearLayoutManager(requireContext())
+    private fun setupObservers() {
         lifecycleScope.launch {
+            // Explicitly specify the lifecycle state
+
+            Log.d("TAG", "SETUP OBSERVER")
+
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                hourlyViewModel.hourlyState.collect { state ->
+                viewModel.weatherState.collect { state ->
                     when (state) {
-                        is HourlyUiState.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                            binding.weatherRecycler.visibility = View.GONE
-                            binding.errorText.visibility = View.GONE
-                        }
-                        is HourlyUiState.Success -> {
-                            binding.progressBar.visibility = View.GONE
-                            binding.errorText.visibility = View.GONE
-                            binding.weatherRecycler.visibility = View.VISIBLE
-                            showWeather(state.weather)
-                        }
-                        is HourlyUiState.Error -> {
-                            binding.progressBar.visibility = View.GONE
-                            binding.weatherRecycler.visibility = View.GONE
-                            binding.errorText.visibility = View.VISIBLE
-                            binding.errorText.text = state.message
-                        }
-                        else -> Unit
+
+                        //we made 3 fun to show different progress
+                        //based on state
+                        is WeatherUiState.Loading -> showLoading()
+                        is WeatherUiState.Success -> showWeather(state.weather)
+                        is WeatherUiState.Error -> showError(state.message)
+                        else -> {}
                     }
                 }
             }
         }
     }
 
-    private fun showWeather(data: HourlyWeatherResponse) {
+    private fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.weatherContainer.visibility = View.GONE
+        binding.errorText.visibility = View.GONE
+    }
 
-        binding.weatherRecycler.layoutManager = LinearLayoutManager(requireContext())
+    private fun showWeather(weather: WeatherResponse) {
+        binding.progressBar.visibility = View.GONE
+        binding.weatherContainer.visibility = View.VISIBLE
+        binding.errorText.visibility = View.GONE
 
-        val items = data.hourly.time.indices.map { index ->
-            HourlyWeatherItem(
-                time = data.hourly.time[index],
-                temperature = data.hourly.temperature_2m[index],
-                weatherCode = data.hourly.weathercode[index]
-            )
+        with(weather.current_weather) {
+            binding.temperatureText.text = "${temperature}°C"
+            binding.windText.text = "Wind: ${windspeed} km/h"
+            binding.timeText.text = "Updated: ${time.substring(11)}" // Just show time
         }
-        Log.d("ShowWeather called", "$items")
-        val adapter = WeatherAdapter(items)
-        binding.weatherRecycler.adapter = adapter
-        binding.weatherRecycler.visibility = View.VISIBLE
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun showError(message: String) {
+        binding.progressBar.visibility = View.GONE
+        binding.weatherContainer.visibility = View.GONE
+        binding.errorText.visibility = View.VISIBLE
+        binding.errorText.text = message
     }
+
 }
